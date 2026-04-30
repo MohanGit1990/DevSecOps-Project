@@ -71,13 +71,54 @@ DevSecOps with ssl certification
       sudo apt update
       sudo apt install jenkins
 
-13. Install kubectl in central server
+      Install plugins inside Jenkins
+         - sonarqube scanner
+         - configfile provider
+         - Maven Integration
+         - Pipeline Maven Integration
+         - k8s plugins
+         - docker, docker pipeline
+
+      Configure the tools in Jenkins
+          - SonarQube Scanner
+             Name: SonarQube Scanner
+             version: latest
+
+         - Maven
+             Name: maven3
+             version: latest
+
+          - Docker
+             Name: docker
+             Install automatically -> Download from docker.com
+             version: latest
+      Install latest docker in Jenkins ec2
+
+      Install Trivy in Jenkins ec2
+      cmd:
+      sudo apt-get install wget gnupg
+      wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+      echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a             /etc/apt/sources.list.d/trivy.list
+      sudo apt-get update
+      sudo apt-get install trivy
+    
+14. Install kubectl in central server
       sudo snap install kubectl --classic
 
-14. Create/configure kubeconfig file with the cluster name
+15. Create/configure kubeconfig file with the cluster name
       aws eks update-kubeconfig --region us-west-2 --name devops-cluster
 
+
+16. Create Jenkins pipeline
+
+      For SonarQube: Manage Jenkins -> System -> SonarQube Servers -> Add SonarQube
+          Name: sonar
+          Server URL: <sonar server url>
+          Server Authentication token: <Add the sonar token as secret text> 
       
+17. Create RBAC to build the jenkins pipeline in central server where cluster is created
+
+      create a service account, role, role binding in namespace
     
 
       
